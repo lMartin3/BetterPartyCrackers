@@ -19,7 +19,7 @@ public class Config {
     );
 
 
-    @Option protected ConfigOption prefix = new ConfigOption("chatPrefix", "&8[&6B&eP&cC&8] ");
+    @Option protected ConfigOption prefix = new ConfigOption("chatPrefix", "&8[&6B&eP&cC&8] &r");
     @Option protected ConfigOption crackers = new ConfigOption("crackers", Arrays.asList(examplePartyCracker.serialize()));
 
     public static Config getInst() {
