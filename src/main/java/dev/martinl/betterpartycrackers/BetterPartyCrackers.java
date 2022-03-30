@@ -1,5 +1,6 @@
 package dev.martinl.betterpartycrackers;
 
+import dev.martinl.betterpartycrackers.commands.MainCommand;
 import dev.martinl.betterpartycrackers.configuration.ConfigurationManager;
 import dev.martinl.betterpartycrackers.manager.PartyCrackerManager;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public final class BetterPartyCrackers extends JavaPlugin {
         crackerManager = new PartyCrackerManager();
         crackerManager.reloadData();
 
+        //noinspection ConstantConditions
+        this.getCommand("bpc").setExecutor(new MainCommand());
     }
 
     @Override

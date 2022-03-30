@@ -6,3 +6,6 @@ prefix: BPC
 authors: [ lMartin3 ]
 description: A test plugin made for Meraki Studios
 website: https://bit.ly/3qMJBCo
+commands:
+  bpc:
+    description: 'Main command'
