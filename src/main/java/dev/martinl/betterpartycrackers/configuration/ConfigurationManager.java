@@ -1,8 +1,10 @@
 package dev.martinl.betterpartycrackers.configuration;
 
 import dev.martinl.betterpartycrackers.BetterPartyCrackers;
+import dev.martinl.betterpartycrackers.data.PartyCracker;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -10,6 +12,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigurationManager {
     private static FileConfiguration configFile = BetterPartyCrackers.getPlugin().getConfig();
@@ -55,6 +58,10 @@ public class ConfigurationManager {
             loc.setPitch(Float.parseFloat(split[5]));
         }
         return loc;
+    }
+
+    public static List<Map<?, ?>> optionAsMapList(ConfigOption option) {
+        return configFile.getMapList(option.getKey());
     }
 
     @NonNull

@@ -1,9 +1,11 @@
 package dev.martinl.betterpartycrackers.configuration;
 
+import dev.martinl.betterpartycrackers.data.PartyCracker;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A ConfigOption is a setting that will be saved in the config.yml file inside the plugin folder. When the plugin is enabled,
@@ -85,6 +87,13 @@ public class ConfigOption {
      */
     public Location asLocation() {
         return ConfigurationManager.optionAsLocation(this);
+    }
+
+    /**
+     * @return The value of the option as a map list.
+     */
+    public List<Map<?, ?>> asMapList() {
+        return ConfigurationManager.optionAsMapList(this);
     }
 
 
