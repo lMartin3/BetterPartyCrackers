@@ -1,0 +1,8 @@
+name: BetterPartyCrackers
+version: '${version}'
+main: dev.martinl.betterpartycrackers.BetterPartyCrackers
+api-version: 1.18
+prefix: BPC
+authors: [ lMartin3 ]
+description: A test plugin made for Meraki Studios
+website: https://bit.ly/3qMJBCo
