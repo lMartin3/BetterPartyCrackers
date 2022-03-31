@@ -84,10 +84,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 List<Integer> failedCrackers = BetterPartyCrackers.getPlugin().getCrackerManager().getFailedCrackers();
                 sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.GREEN +
                         "Reload complete, loaded a total of " + ChatColor.YELLOW + loadedCrackerAmount + ChatColor.GREEN + " party cracker types.");
-                if(failedCrackers.size()>0) {
+                if (failedCrackers.size() > 0) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.GOLD +
-                        "Failed to load " + ChatColor.YELLOW + failedCrackers.size() + ChatColor.GOLD + " types: "
-                        + ChatColor.YELLOW + failedCrackers);
+                            "Failed to load " + ChatColor.YELLOW + failedCrackers.size() + ChatColor.GOLD + " types: "
+                            + ChatColor.YELLOW + failedCrackers);
                 }
             }
             case "list" -> {
@@ -102,12 +102,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + Config.getInst().getNoPermissionMessage().asFormattedString());
                     break;
                 }
-                if(args.length<2) {
+                if (args.length < 2) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Usage: /bpc info <type>");
                     break;
                 }
                 PartyCracker type = BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCracker(args[1]);
-                if(type==null) {
+                if (type == null) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Party Cracker \"" + args[1] + "\" does not exist.");
                     showCrackerList(sender);
                     break;
@@ -115,7 +115,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.GOLD + "Showing information:");
                 sender.sendMessage(ChatColor.YELLOW + "ID: " + ChatColor.GRAY + type.getId());
                 sender.sendMessage(ChatColor.YELLOW + "Name: " + ChatColor.GRAY + type.getName());
-                sender.sendMessage(ChatColor.YELLOW + "Lore: " + ChatColor.GRAY + String.join( ChatColor.GRAY + ", ", type.getLore()));
+                sender.sendMessage(ChatColor.YELLOW + "Lore: " + ChatColor.GRAY + String.join(ChatColor.GRAY + ", ", type.getLore()));
                 sender.sendMessage(ChatColor.YELLOW + "Material: " + ChatColor.GRAY + type.getMaterial().toString());
                 sender.sendMessage(ChatColor.YELLOW + "Shiny: " + ChatColor.GRAY + type.isShiny());
                 sender.sendMessage(ChatColor.YELLOW + "Detonation time (ms): " + ChatColor.GRAY + type.getDetonationTime());
@@ -123,7 +123,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.YELLOW + "Explosion sounds: " + ChatColor.GRAY + type.getExplosionSounds().stream().map(Enum::toString).collect(Collectors.joining(", ")));
                 sender.sendMessage(ChatColor.YELLOW + "Particle effects: " + ChatColor.GRAY + type.getParticleEffects().stream().map(Enum::toString).collect(Collectors.joining(", ")));
                 sender.sendMessage(ChatColor.YELLOW + "Spawns firework: " + ChatColor.GRAY + type.isSpawnFirework());
-                sender.sendMessage(ChatColor.YELLOW + "Rewards: " + ChatColor.GRAY + type.getRewards().stream().map(reward->reward.getAmount() + " " + reward.getMaterial().toString() + " [" + reward.getChance() + "]").collect(Collectors.joining(", ")));
+                sender.sendMessage(ChatColor.YELLOW + "Rewards: " + ChatColor.GRAY + type.getRewards().stream().map(reward -> reward.getAmount() + " " + reward.getMaterial().toString() + " [" + reward.getChance() + "]").collect(Collectors.joining(", ")));
             }
             default -> sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Invalid subcommand, please use /bpc help for help.");
         }
@@ -158,33 +158,34 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     private List<String> getAllowedSubcommands(CommandSender sender) {
         List<String> result = new ArrayList<>();
         result.add("help");
-        if(sender.hasPermission(GIVE_SUBCOMMAND_PERMISSION)) result.add("give");
-        if(sender.hasPermission(RELOAD_SUBCOMMAND_PERMISSION)) result.add("reload");
-        if(sender.hasPermission(LIST_SUBCOMMAND_PERMISSION)) result.add("list");
-        if(sender.hasPermission(INFO_SUBCOMMAND_PERMISSION)) result.add("info");
+        if (sender.hasPermission(GIVE_SUBCOMMAND_PERMISSION)) result.add("give");
+        if (sender.hasPermission(RELOAD_SUBCOMMAND_PERMISSION)) result.add("reload");
+        if (sender.hasPermission(LIST_SUBCOMMAND_PERMISSION)) result.add("list");
+        if (sender.hasPermission(INFO_SUBCOMMAND_PERMISSION)) result.add("info");
         return result;
     }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         if (!command.getName().equalsIgnoreCase(COMMAND_NAME)) return null;
-        if(args.length==0) {
+        if (args.length == 0) {
             return getAllowedSubcommands(sender);
-        } else if(args.length==1) {
-            return getAllowedSubcommands(sender).stream().filter(sc->sc.startsWith(args[0].toLowerCase())).toList();
+        } else if (args.length == 1) {
+            return getAllowedSubcommands(sender).stream().filter(sc -> sc.startsWith(args[0].toLowerCase())).toList();
         }
-        switch(args[0].toLowerCase()) {
-            case "give"-> {
+        switch (args[0].toLowerCase()) {
+            case "give" -> {
                 if (args.length == 2) {
-                    return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(n->n.startsWith(args[1].toLowerCase())).toList();
-                } else if(args.length==3) {
-                    return BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList().stream().map(PartyCracker::getId).filter(id->id.startsWith(args[2].toLowerCase())).toList();
-                } else if(args.length==4) {   return List.of("1");
+                    return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(n -> n.startsWith(args[1].toLowerCase())).toList();
+                } else if (args.length == 3) {
+                    return BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList().stream().map(PartyCracker::getId).filter(id -> id.startsWith(args[2].toLowerCase())).toList();
+                } else if (args.length == 4) {
+                    return List.of("1");
                 }
             }
 
             case "info" -> {
-                return BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList().stream().map(PartyCracker::getId).filter(id->id.startsWith(args[1].toLowerCase())).toList();
+                return BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList().stream().map(PartyCracker::getId).filter(id -> id.startsWith(args[1].toLowerCase())).toList();
             }
         }
         return null;

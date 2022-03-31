@@ -41,6 +41,9 @@ public class PartyCracker {
     @SerializeRewardList
     public List<PartyCrackerReward> rewards = new ArrayList<>();
 
+    public static PartyCracker fromSerializedData(Map<?, ?> data) {
+        return SerializerUtil.deserialize(new PartyCracker(), data);
+    }
 
     public ItemStack buildItem() {
         return buildItem(1);
@@ -56,7 +59,7 @@ public class PartyCracker {
     }
 
     public ItemStack getRandomReward() {
-        if(rewards.size()==0) return null;
+        if (rewards.size() == 0) return null;
         double totalWeight = 0.0;
         for (PartyCrackerReward reward : rewards) {
             totalWeight += reward.getChance();
@@ -68,10 +71,6 @@ public class PartyCracker {
         }
         PartyCrackerReward chosenReward = rewards.get(idx);
         return new ItemBuilder(chosenReward.getMaterial()).setAmount(chosenReward.getAmount()).build();
-    }
-
-    public static PartyCracker fromSerializedData(Map<?, ?> data) {
-        return SerializerUtil.deserialize(new PartyCracker(), data);
     }
 
     public Map<String, Object> serialize() {

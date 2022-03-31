@@ -40,7 +40,7 @@ public class PartyCrackerManager {
             Map<?, ?> crackerData = configList.get(i);
             try {
                 PartyCracker partyCracker = PartyCracker.fromSerializedData(crackerData);
-                if(!partyCrackerTypes.containsKey(partyCracker.getId())) {
+                if (!partyCrackerTypes.containsKey(partyCracker.getId())) {
                     partyCrackerTypes.put(partyCracker.getId(), partyCracker);
                 } else {
                     Bukkit.getConsoleSender().sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.YELLOW + "Warning: duplicate cracker types with id " + partyCracker.getId());
@@ -85,18 +85,18 @@ public class PartyCrackerManager {
         assert location.getWorld() != null;
         List<Sound> possibleSounds = partyCracker.getExplosionSounds();
         Sound sound = null;
-        if(possibleSounds.size()>0) {
+        if (possibleSounds.size() > 0) {
             sound = possibleSounds.get(ThreadLocalRandom.current().nextInt(possibleSounds.size()));
         }
 
         List<Particle> possibleEffects = partyCracker.getParticleEffects();
         Particle particleEffect = null;
-        if(possibleEffects.size()>0) {
+        if (possibleEffects.size() > 0) {
             particleEffect = possibleEffects.get(ThreadLocalRandom.current().nextInt(possibleEffects.size()));
         }
 
         Firework firework = null;
-        if(partyCracker.isSpawnFirework()) {
+        if (partyCracker.isSpawnFirework()) {
             firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
             FireworkMeta meta = firework.getFireworkMeta();
             meta.setPower(127);
@@ -104,12 +104,12 @@ public class PartyCrackerManager {
             firework.setFireworkMeta(meta);
         }
 
-        if(sound!=null) location.getWorld().playSound(location, sound, 1f, 1f);
-        if(particleEffect!=null) location.getWorld().spawnParticle(particleEffect, location, 5);
-        if(firework!=null) firework.detonate();
+        if (sound != null) location.getWorld().playSound(location, sound, 1f, 1f);
+        if (particleEffect != null) location.getWorld().spawnParticle(particleEffect, location, 5);
+        if (firework != null) firework.detonate();
 
         ItemStack reward = partyCracker.getRandomReward();
-        if(reward!=null) {
+        if (reward != null) {
             location.getWorld().dropItem(location, reward);
         }
     }
@@ -121,22 +121,22 @@ public class PartyCrackerManager {
             PartyCracker crackerType = entry.getValue().getCracker();
             long droppedTime = entry.getValue().getDroppedOn();
             long timeRemaining = droppedTime + crackerType.getDetonationTime() - System.currentTimeMillis();
-            if (timeRemaining<=0||itemEntity==null||itemEntity.isDead()) {
+            if (timeRemaining <= 0 || itemEntity == null || itemEntity.isDead()) {
                 explodeCracker(crackerType, itemEntity.getLocation());
                 toRemove.add(itemEntity);
             } else {
-                if(Config.getInst().getShowTimeRemaining().asBoolean()) {
+                if (Config.getInst().getShowTimeRemaining().asBoolean()) {
                     double secondsRemaining = timeRemaining / 1000D;
                     itemEntity.setCustomName(ChatColor.YELLOW + String.format("%.1f0s", secondsRemaining));
                 }
-                if(crackerType.getTickSound()!=null) {
+                if (crackerType.getTickSound() != null) {
                     itemEntity.getWorld().playSound(itemEntity.getLocation(), crackerType.getTickSound(), 1f, 1f);
                 }
             }
         }
-        toRemove.forEach(ent->{
-           partyCrackerEntities.remove(ent);
-           ent.remove();
+        toRemove.forEach(ent -> {
+            partyCrackerEntities.remove(ent);
+            ent.remove();
         });
     }
 
@@ -145,7 +145,7 @@ public class PartyCrackerManager {
     }
 
     public void removeAllCrackers() {
-        for(Item entity : partyCrackerEntities.keySet()) {
+        for (Item entity : partyCrackerEntities.keySet()) {
             entity.remove();
         }
         partyCrackerEntities.clear();

@@ -18,14 +18,14 @@ public class CrackerItemPickupEvent implements Listener {
 
     @EventHandler
     public void onCrackerPickupByHopper(InventoryPickupItemEvent event) {
-        if(BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getItem())) {
+        if (BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getItem())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onCrackerPickupByEntity(EntityPickupItemEvent event) {
-        if(BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getItem())) {
+        if (BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getItem())) {
             event.setCancelled(true);
         }
     }
@@ -33,14 +33,14 @@ public class CrackerItemPickupEvent implements Listener {
     @EventHandler
     public void onItemMerge(ItemMergeEvent event) {
         PartyCrackerManager manager = BetterPartyCrackers.getPlugin().getCrackerManager();
-        if(manager.isCrackerEntity(event.getEntity()) || manager.isCrackerEntity(event.getTarget())) {
+        if (manager.isCrackerEntity(event.getEntity()) || manager.isCrackerEntity(event.getTarget())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onCrackerPickupByEntity(ItemDespawnEvent event) {
-        if(BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getEntity())) {
+        if (BetterPartyCrackers.getPlugin().getCrackerManager().isCrackerEntity(event.getEntity())) {
             event.setCancelled(true);
         }
     }

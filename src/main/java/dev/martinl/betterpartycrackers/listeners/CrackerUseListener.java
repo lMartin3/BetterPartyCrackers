@@ -34,8 +34,8 @@ public class CrackerUseListener implements Listener {
         event.setCancelled(true);
         usedItem.setAmount(usedItem.getAmount() - 1);
         Location location = player.getEyeLocation().clone();
-        assert location.getWorld()!=null;
-        location.getWorld().playSound(location, Sound.ENTITY_SNOWBALL_THROW, 1f,1f);
+        assert location.getWorld() != null;
+        location.getWorld().playSound(location, Sound.ENTITY_SNOWBALL_THROW, 1f, 1f);
         BetterPartyCrackers.getPlugin().getCrackerManager().dropCracker(crackerType, location, location.getDirection());
     }
 }
