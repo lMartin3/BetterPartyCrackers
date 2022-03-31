@@ -1,6 +1,5 @@
 package dev.martinl.betterpartycrackers.configuration;
 
-import dev.martinl.betterpartycrackers.data.PartyCracker;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 

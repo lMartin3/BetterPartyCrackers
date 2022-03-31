@@ -30,6 +30,9 @@ public class PartyCracker {
     @SerializeEnumListAsStringList(enumType = Sound.class)
     public List<Sound> possibleSounds = new ArrayList<>();
 
+    public static PartyCracker fromSerializedData(Map<?, ?> data) {
+        return SerializerUtil.createPartyCrackerFromSerializedData(data);
+    }
 
     public ItemStack buildItem() {
         return buildItem(1);
@@ -45,9 +48,6 @@ public class PartyCracker {
     }
 
     public Map<String, Object> serialize() {
-       return SerializerUtil.serializePartyCracker(this);
-    }
-    public static PartyCracker fromSerializedData(Map<?, ?> data) {
-        return SerializerUtil.createPartyCrackerFromSerializedData(data);
+        return SerializerUtil.serializePartyCracker(this);
     }
 }

@@ -1,10 +1,8 @@
 package dev.martinl.betterpartycrackers.configuration;
 
 import dev.martinl.betterpartycrackers.BetterPartyCrackers;
-import dev.martinl.betterpartycrackers.data.PartyCracker;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -50,10 +48,10 @@ public class ConfigurationManager {
 
     public static Location optionAsLocation(ConfigOption option) {
         String string = configFile.getString(option.getKey());
-        if(string==null) return null;
+        if (string == null) return null;
         String[] split = string.split(",");
         Location loc = new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
-        if(split.length>=6) {
+        if (split.length >= 6) {
             loc.setYaw(Float.parseFloat(split[4]));
             loc.setPitch(Float.parseFloat(split[5]));
         }

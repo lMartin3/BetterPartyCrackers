@@ -4,16 +4,20 @@ import dev.martinl.betterpartycrackers.commands.MainCommand;
 import dev.martinl.betterpartycrackers.configuration.ConfigurationManager;
 import dev.martinl.betterpartycrackers.listeners.CrackerUseListener;
 import dev.martinl.betterpartycrackers.manager.PartyCrackerManager;
-import dev.martinl.betterpartycrackers.util.StringUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BetterPartyCrackers extends JavaPlugin {
     private static BetterPartyCrackers instance;
-    @Getter private PartyCrackerManager crackerManager;
-    @Getter private NamespacedKey namespacedKey;
+    @Getter
+    private PartyCrackerManager crackerManager;
+    @Getter
+    private NamespacedKey namespacedKey;
+
+    public static BetterPartyCrackers getPlugin() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -29,9 +33,5 @@ public final class BetterPartyCrackers extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    }
-
-    public static BetterPartyCrackers getPlugin() {
-        return instance;
     }
 }

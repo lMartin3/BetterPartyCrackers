@@ -10,7 +10,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PartyCrackerManager {
@@ -26,26 +29,26 @@ public class PartyCrackerManager {
         partyCrackerTypes.clear();
         failedCrackers.clear();
         List<Map<?, ?>> configList = Config.getInst().getCrackers().asMapList();
-        for(int i=0;i<configList.size();i++) {
+        for (int i = 0; i < configList.size(); i++) {
             Map<?, ?> crackerData = configList.get(i);
             try {
                 PartyCracker partyCracker = PartyCracker.fromSerializedData(crackerData);
                 partyCrackerTypes.put(partyCracker.getId(), partyCracker);
                 Bukkit.broadcastMessage("Sounds: " + partyCracker.getPossibleSounds());
-            } catch(Exception e) {
-                failedCrackers.add(i+1);
+            } catch (Exception e) {
+                failedCrackers.add(i + 1);
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Better Party Crackers - " +
-                        "Failed to load PartyCracker number " + ChatColor.YELLOW + (i+1) + ChatColor.RED + ". " +
+                        "Failed to load PartyCracker number " + ChatColor.YELLOW + (i + 1) + ChatColor.RED + ". " +
                         "The following error occurred: " + ChatColor.WHITE + e.getMessage().split("\n")[0]);
                 e.printStackTrace();
             }
         }
         Bukkit.getConsoleSender().sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.GREEN +
                 "Reload complete, loaded a total of " + ChatColor.YELLOW + partyCrackerTypes.size() + ChatColor.GREEN + " party cracker types.");
-        if(failedCrackers.size()>0) {
+        if (failedCrackers.size() > 0) {
             Bukkit.getConsoleSender().sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.GOLD +
                     "Failed to load " + ChatColor.YELLOW + failedCrackers.size() + ChatColor.GOLD + " types: "
-            + ChatColor.YELLOW + failedCrackers);
+                    + ChatColor.YELLOW + failedCrackers);
         }
     }
 
@@ -58,7 +61,7 @@ public class PartyCrackerManager {
     }
 
     public void dropCracker(PartyCracker partyCracker, Location location, Vector direction) {
-        if(location.getWorld()==null) return;
+        if (location.getWorld() == null) return;
         Item itemEntity = location.getWorld().dropItem(location, partyCracker.buildItem());
         itemEntity.setPickupDelay(Integer.MAX_VALUE);
         itemEntity.setVelocity(direction.multiply(0.5));
@@ -72,18 +75,19 @@ public class PartyCrackerManager {
 
     private void loopItemEntities() {
         ArrayList<Item> toRemove = new ArrayList<>();
-        for(Map.Entry<Item, CrackerItemEntityData> entry : partyCrackerEntities.entrySet()) {
+        for (Map.Entry<Item, CrackerItemEntityData> entry : partyCrackerEntities.entrySet()) {
             Item itemEntity = entry.getKey();
             PartyCracker crackerType = entry.getValue().getCracker();
             long droppedTime = entry.getValue().getDroppedOn();
 
-            if(droppedTime>0) {
+            if (droppedTime > 0) {
 
             }
         }
     }
 
-    @Data @AllArgsConstructor
+    @Data
+    @AllArgsConstructor
     class CrackerItemEntityData {
         private final PartyCracker cracker;
         private final long droppedOn;

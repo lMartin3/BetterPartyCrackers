@@ -37,11 +37,11 @@ public class ItemBuilder {
         this.material = is.getType();
         this.itemMeta = is.getItemMeta();
         this.durability = (is.getItemMeta() instanceof Damageable ? ((Damageable) is.getItemMeta()).getDamage() : 0);
-        if(itemMeta.hasDisplayName()) {
+        if (itemMeta.hasDisplayName()) {
             itemMeta.getDisplayName();
             this.name = itemMeta.getDisplayName();
         }
-        if(itemMeta.hasLore() && itemMeta.getLore()!=null) {
+        if (itemMeta.hasLore() && itemMeta.getLore() != null) {
             this.lore = itemMeta.getLore();
         }
     }
@@ -52,21 +52,22 @@ public class ItemBuilder {
 
 
     public ItemBuilder setFlags(ItemFlag... flags) {
-        if(itemMeta==null) itemMeta = new ItemStack(material).getItemMeta();
-        if(itemMeta==null) return this;
+        if (itemMeta == null) itemMeta = new ItemStack(material).getItemMeta();
+        if (itemMeta == null) return this;
         this.itemMeta.addItemFlags(flags);
         return this;
     }
 
     public ItemBuilder addEnchantment(Enchantment enchantment) {
-        if(itemMeta==null) itemMeta = new ItemStack(material).getItemMeta();
-        if(itemMeta==null) return this;
+        if (itemMeta == null) itemMeta = new ItemStack(material).getItemMeta();
+        if (itemMeta == null) return this;
         this.itemMeta.addEnchant(enchantment, 1, true);
         return this;
     }
+
     public ItemBuilder addEnchantment(Enchantment enchantment, int level) {
-        if(itemMeta==null) itemMeta = new ItemStack(material).getItemMeta();
-        if(itemMeta==null) return this;
+        if (itemMeta == null) itemMeta = new ItemStack(material).getItemMeta();
+        if (itemMeta == null) return this;
         this.itemMeta.addEnchant(enchantment, level, true);
         return this;
     }
@@ -107,7 +108,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setLoreFormatted(List<String> lore) {
-        this.lore = lore.stream().map(line->ChatColor.translateAlternateColorCodes('&', line)).toList();
+        this.lore = lore.stream().map(line -> ChatColor.translateAlternateColorCodes('&', line)).toList();
         return this;
     }
 
@@ -148,19 +149,19 @@ public class ItemBuilder {
             result.setItemMeta(itemMeta);
         }
         ItemMeta resultMeta = result.getItemMeta();
-        if(resultMeta!=null) {
-            if(resultMeta instanceof Damageable dmgMeta) {
+        if (resultMeta != null) {
+            if (resultMeta instanceof Damageable dmgMeta) {
                 dmgMeta.setDamage(durability);
             }
             resultMeta.setDisplayName(name);
             resultMeta.setLore(lore);
             resultMeta.setUnbreakable(unbreakable);
-            if(modelData!=0) resultMeta.setCustomModelData(modelData);
-            if(LEATHER_ITEMS.contains(material)) {
+            if (modelData != 0) resultMeta.setCustomModelData(modelData);
+            if (LEATHER_ITEMS.contains(material)) {
                 LeatherArmorMeta lam = (LeatherArmorMeta) resultMeta;
                 lam.setColor(color);
             }
-            if(shiny) {
+            if (shiny) {
                 resultMeta.addEnchant(Enchantment.DURABILITY, 1, true);
                 resultMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }

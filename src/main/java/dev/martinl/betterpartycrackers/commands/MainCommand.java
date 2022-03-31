@@ -28,7 +28,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length==0) {
+        if (args.length == 0) {
             showHelpMenu(sender);
             return false;
         }
@@ -44,18 +44,18 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     break;
                 }
                 Player targetPlayer = Bukkit.getPlayer(args[1]);
-                if(targetPlayer==null||!targetPlayer.isOnline()) {
+                if (targetPlayer == null || !targetPlayer.isOnline()) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Player \"" + args[1] + "\" is not online.");
                     break;
                 }
                 PartyCracker chosenType = BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCracker(args[2]);
-                if(chosenType==null) {
+                if (chosenType == null) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Party Cracker \"" + args[2] + "\" does not exist.");
                     showCrackerList(sender);
                     break;
                 }
                 int amount = 1;
-                if(args.length>=4) {
+                if (args.length >= 4) {
                     try {
                         amount = Integer.parseInt(args[3]);
                     } catch (NumberFormatException ignored) {
@@ -63,7 +63,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         break;
                     }
                 }
-                if(amount<1) {
+                if (amount < 1) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Insert a positive amount.");
                     break;
                 }
@@ -76,10 +76,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     }
 
     private void showHelpMenu(CommandSender sender) {
-        String line = ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "-----------" + ChatColor.RESET;
-        sender.sendMessage(line + ChatColor.YELLOW + " Better Party Crackers v"+ BetterPartyCrackers.getPlugin().getDescription().getVersion() + " " + line);
+        String line = ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.RESET;
+        sender.sendMessage(line + ChatColor.YELLOW + " Better Party Crackers v" + BetterPartyCrackers.getPlugin().getDescription().getVersion() + " " + line);
         sender.sendMessage(ChatColor.YELLOW + "/bpc help");
-        if(sender.hasPermission("betterpartycrackers.give")) {
+        if (sender.hasPermission("betterpartycrackers.give")) {
 
         }
         sender.sendMessage(line + line + line + line);
@@ -88,12 +88,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     private void showCrackerList(CommandSender sender) {
         sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.YELLOW + "Party cracker types: " + ChatColor.GRAY +
                 BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList()
-                        .stream().map(PartyCracker::getId).collect(Collectors.joining( ChatColor.DARK_GRAY + ", " + ChatColor.GRAY)) + ChatColor.DARK_GRAY + ".");
+                        .stream().map(PartyCracker::getId).collect(Collectors.joining(ChatColor.DARK_GRAY + ", " + ChatColor.GRAY)) + ChatColor.DARK_GRAY + ".");
     }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
-        if(!command.getName().equalsIgnoreCase(COMMAND_NAME)) return null;
+        if (!command.getName().equalsIgnoreCase(COMMAND_NAME)) return null;
         return List.of("asd");
     }
 }
