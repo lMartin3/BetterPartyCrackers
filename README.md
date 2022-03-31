@@ -27,7 +27,9 @@ Time spent: 6 hours and 30 minutes (according to WakaTime), see the observations
 
 
 ## Observations
-Near 1.5 hours were spent in the serialization system, it was possible to shorten the development time by
+- Near 1.5 hours were spent in the serialization system, it was possible to shorten the development time by
 using a library or manually mapping each field of the PartyCracker class. In spite of this, I opted
 for a custom serialization system, because I feel it is easier to work with and will provide
 flexibility in the future.
+- Although large commits were made in this repository, I usually perform smaller commits with less changes
+for better readability.
