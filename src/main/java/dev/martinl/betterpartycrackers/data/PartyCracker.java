@@ -1,6 +1,9 @@
 package dev.martinl.betterpartycrackers.data;
 
 import dev.martinl.betterpartycrackers.BetterPartyCrackers;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeEnumAsString;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeEnumListAsStringList;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeRewardList;
 import dev.martinl.betterpartycrackers.util.ItemBuilder;
 import dev.martinl.betterpartycrackers.util.SerializerUtil;
 import lombok.AllArgsConstructor;
@@ -35,7 +38,7 @@ public class PartyCracker {
     @SerializeEnumListAsStringList(enumType = Particle.class)
     public List<Particle> particleEffects = new ArrayList<>();
     public boolean spawnFirework = false;
-    @RewardList
+    @SerializeRewardList
     public List<PartyCrackerReward> rewards = new ArrayList<>();
 
 

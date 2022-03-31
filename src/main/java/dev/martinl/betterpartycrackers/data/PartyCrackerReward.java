@@ -1,5 +1,6 @@
 package dev.martinl.betterpartycrackers.data;
 
+import dev.martinl.betterpartycrackers.data.serialization.SerializeEnumAsString;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

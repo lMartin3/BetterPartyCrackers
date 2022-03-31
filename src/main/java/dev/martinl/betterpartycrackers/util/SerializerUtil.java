@@ -1,9 +1,9 @@
 package dev.martinl.betterpartycrackers.util;
 
 import dev.martinl.betterpartycrackers.data.PartyCrackerReward;
-import dev.martinl.betterpartycrackers.data.RewardList;
-import dev.martinl.betterpartycrackers.data.SerializeEnumAsString;
-import dev.martinl.betterpartycrackers.data.SerializeEnumListAsStringList;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeRewardList;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeEnumAsString;
+import dev.martinl.betterpartycrackers.data.serialization.SerializeEnumListAsStringList;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class SerializerUtil {
 
                 SerializeEnumAsString serializeAsStringAnnotation = field.getAnnotation(SerializeEnumAsString.class);
                 SerializeEnumListAsStringList serializeAsStringListAnnotation = field.getAnnotation(SerializeEnumListAsStringList.class);
-                RewardList rewardListAnnotation = field.getAnnotation(RewardList.class);
+                SerializeRewardList serializeRewardListAnnotation = field.getAnnotation(SerializeRewardList.class);
 
                 if (serializeAsStringAnnotation != null) {
                     Object correctValue = Enum.valueOf(serializeAsStringAnnotation.enumType(), (String) valueInConfig);
@@ -36,7 +36,7 @@ public class SerializerUtil {
                         Object correctValue = Enum.valueOf(serializeAsStringListAnnotation.enumType(), inConfig);
                         ((List<Object>) field.get(obj)).add(correctValue);
                     }
-                } else if(rewardListAnnotation!=null){
+                } else if(serializeRewardListAnnotation !=null){
                     List<PartyCrackerReward> rewardList = new ArrayList<>();
                     List<Map<?, ?>> serializedRewards = (List<Map<?, ?>>) valueInConfig;
                     for(Map<?, ?> serializedReward : serializedRewards.stream().toList()) {
@@ -64,7 +64,7 @@ public class SerializerUtil {
                     mappedValues.put(configFieldName, fieldValue.toString());
                 } else if (field.getAnnotation(SerializeEnumListAsStringList.class) != null && fieldValue instanceof List<?> fieldAsList) {
                     mappedValues.put(configFieldName, fieldAsList.stream().map(Object::toString).toList());
-                } else if(field.getAnnotation(RewardList.class)!=null) {
+                } else if(field.getAnnotation(SerializeRewardList.class)!=null) {
                     List<Map<String, Object>> serializedRewards = new ArrayList<>();
                     for(PartyCrackerReward reward : (List<PartyCrackerReward>) fieldValue) {
                         serializedRewards.add(serialize(reward));

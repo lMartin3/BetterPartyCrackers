@@ -1,4 +1,4 @@
-package dev.martinl.betterpartycrackers.data;
+package dev.martinl.betterpartycrackers.data.serialization;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
