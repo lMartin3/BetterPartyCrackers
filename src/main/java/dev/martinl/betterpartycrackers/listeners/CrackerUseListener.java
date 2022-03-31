@@ -4,6 +4,7 @@ import dev.martinl.betterpartycrackers.BetterPartyCrackers;
 import dev.martinl.betterpartycrackers.data.PartyCracker;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +34,8 @@ public class CrackerUseListener implements Listener {
         event.setCancelled(true);
         usedItem.setAmount(usedItem.getAmount() - 1);
         Location location = player.getEyeLocation().clone();
-
+        assert location.getWorld()!=null;
+        location.getWorld().playSound(location, Sound.ENTITY_SNOWBALL_THROW, 1f,1f);
         BetterPartyCrackers.getPlugin().getCrackerManager().dropCracker(crackerType, location, location.getDirection());
     }
 }

@@ -2,6 +2,7 @@ package dev.martinl.betterpartycrackers;
 
 import dev.martinl.betterpartycrackers.commands.MainCommand;
 import dev.martinl.betterpartycrackers.configuration.ConfigurationManager;
+import dev.martinl.betterpartycrackers.listeners.CrackerItemPickupEvent;
 import dev.martinl.betterpartycrackers.listeners.CrackerUseListener;
 import dev.martinl.betterpartycrackers.manager.PartyCrackerManager;
 import lombok.Getter;
@@ -27,11 +28,13 @@ public final class BetterPartyCrackers extends JavaPlugin {
         crackerManager.reloadData();
         new MainCommand();
         new CrackerUseListener();
+        new CrackerItemPickupEvent();
 
         namespacedKey = new NamespacedKey(BetterPartyCrackers.getPlugin(), "party_cracker");
     }
 
     @Override
     public void onDisable() {
+        crackerManager.removeAllCrackers();
     }
 }

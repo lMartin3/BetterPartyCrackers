@@ -3,7 +3,6 @@ package dev.martinl.betterpartycrackers.commands;
 import dev.martinl.betterpartycrackers.BetterPartyCrackers;
 import dev.martinl.betterpartycrackers.configuration.Config;
 import dev.martinl.betterpartycrackers.data.PartyCracker;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,8 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
-    @Getter
     private static final String COMMAND_NAME = "bpc";
+    private static final String GIVE_SUBCOMMAND_PERMISSION = "betterpartycrackers.give";
+    private static final String RELOAD_SUBCOMMAND_PERMISSION = "betterpartycrackers.reload";
+    private static final String LIST_SUBCOMMAND_PERMISSION = "betterpartycrackers.list";
+    private static final String INFO_SUBCOMMAND_PERMISSION = "betterpartycrackers.info";
 
     @SuppressWarnings("ConstantConditions")
     public MainCommand() {
@@ -35,7 +37,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         switch (args[0]) {
             case "help" -> showHelpMenu(sender);
             case "give" -> {
-                if (!sender.hasPermission("betterpartycrackers.give")) {
+                if (!sender.hasPermission(GIVE_SUBCOMMAND_PERMISSION)) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + Config.getInst().getNoPermissionMessage().asFormattedString());
                     break;
                 }
@@ -69,7 +71,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
                 targetPlayer.getInventory().addItem(chosenType.buildItem(amount));
             }
-
             default -> sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Invalid subcommand, please use /bpc help for help.");
         }
         return false;
@@ -78,9 +79,18 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     private void showHelpMenu(CommandSender sender) {
         String line = ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.RESET;
         sender.sendMessage(line + ChatColor.YELLOW + " Better Party Crackers v" + BetterPartyCrackers.getPlugin().getDescription().getVersion() + " " + line);
-        sender.sendMessage(ChatColor.YELLOW + "/bpc help");
-        if (sender.hasPermission("betterpartycrackers.give")) {
-
+        sender.sendMessage(ChatColor.YELLOW + "/bpc help " + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Show the help menu");
+        if (sender.hasPermission(GIVE_SUBCOMMAND_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/bpc give <player> <type> [<amount>]" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Give a party cracker to a player");
+        }
+        if (sender.hasPermission(RELOAD_SUBCOMMAND_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/bpc reload" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Reload the plugin's configuration");
+        }
+        if (sender.hasPermission(LIST_SUBCOMMAND_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/bpc list" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Show all the cracker types");
+        }
+        if (sender.hasPermission(INFO_SUBCOMMAND_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/bpc info <type>" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Show information about a party cracker type");
         }
         sender.sendMessage(line + line + line + line);
     }

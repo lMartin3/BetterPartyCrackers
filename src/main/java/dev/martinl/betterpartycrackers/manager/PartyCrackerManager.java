@@ -3,18 +3,22 @@ package dev.martinl.betterpartycrackers.manager;
 import dev.martinl.betterpartycrackers.BetterPartyCrackers;
 import dev.martinl.betterpartycrackers.configuration.Config;
 import dev.martinl.betterpartycrackers.data.PartyCracker;
+import dev.martinl.betterpartycrackers.util.ColorUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PartyCrackerManager {
@@ -34,7 +38,11 @@ public class PartyCrackerManager {
             Map<?, ?> crackerData = configList.get(i);
             try {
                 PartyCracker partyCracker = PartyCracker.fromSerializedData(crackerData);
-                partyCrackerTypes.put(partyCracker.getId(), partyCracker);
+                if(!partyCrackerTypes.containsKey(partyCracker.getId())) {
+                    partyCrackerTypes.put(partyCracker.getId(), partyCracker);
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.YELLOW + "Warning: duplicate cracker types with id " + partyCracker.getId());
+                }
             } catch (Exception e) {
                 failedCrackers.add(i + 1);
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Better Party Crackers - " +
@@ -65,12 +73,42 @@ public class PartyCrackerManager {
         Item itemEntity = location.getWorld().dropItem(location, partyCracker.buildItem());
         itemEntity.setPickupDelay(Integer.MAX_VALUE);
         itemEntity.setVelocity(direction.multiply(0.5));
+        itemEntity.setCustomNameVisible(true);
         partyCrackerEntities.put(itemEntity, new CrackerItemEntityData(partyCracker, System.currentTimeMillis()));
 
     }
 
     private void explodeCracker(PartyCracker partyCracker, Location location) {
+        assert location.getWorld() != null;
+        List<Sound> possibleSounds = partyCracker.getExplosionSounds();
+        Sound sound = null;
+        if(possibleSounds.size()>0) {
+            sound = possibleSounds.get(ThreadLocalRandom.current().nextInt(possibleSounds.size()));
+        }
 
+        List<Particle> possibleEffects = partyCracker.getParticleEffects();
+        Particle particleEffect = null;
+        if(possibleEffects.size()>0) {
+            particleEffect = possibleEffects.get(ThreadLocalRandom.current().nextInt(possibleEffects.size()));
+        }
+
+        Firework firework = null;
+        if(partyCracker.isSpawnFirework()) {
+            firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+            FireworkMeta meta = firework.getFireworkMeta();
+            meta.setPower(127);
+            meta.addEffect(FireworkEffect.builder().withColor(ColorUtil.getRandomColor()).build());
+            firework.setFireworkMeta(meta);
+        }
+
+        if(sound!=null) location.getWorld().playSound(location, sound, 1f, 1f);
+        if(particleEffect!=null) location.getWorld().spawnParticle(particleEffect, location, 5);
+        if(firework!=null) firework.detonate();
+
+        ItemStack reward = partyCracker.getRandomReward();
+        if(reward!=null) {
+            location.getWorld().dropItem(location, reward);
+        }
     }
 
     private void loopItemEntities() {
@@ -79,11 +117,35 @@ public class PartyCrackerManager {
             Item itemEntity = entry.getKey();
             PartyCracker crackerType = entry.getValue().getCracker();
             long droppedTime = entry.getValue().getDroppedOn();
-
-            if (droppedTime > 0) {
-
+            long timeRemaining = droppedTime + crackerType.getDetonationTime() - System.currentTimeMillis();
+            if (timeRemaining<=0||itemEntity==null||itemEntity.isDead()) {
+                explodeCracker(crackerType, itemEntity.getLocation());
+                toRemove.add(itemEntity);
+            } else {
+                if(Config.getInst().getShowTimeRemaining().asBoolean()) {
+                    double secondsRemaining = timeRemaining / 1000D;
+                    itemEntity.setCustomName(ChatColor.YELLOW + String.format("%.1f0s", secondsRemaining));
+                }
+                if(crackerType.getTickSound()!=null) {
+                    itemEntity.getWorld().playSound(itemEntity.getLocation(), crackerType.getTickSound(), 1f, 1f);
+                }
             }
         }
+        toRemove.forEach(ent->{
+           partyCrackerEntities.remove(ent);
+           ent.remove();
+        });
+    }
+
+    public boolean isCrackerEntity(Item item) {
+        return partyCrackerEntities.containsKey(item);
+    }
+
+    public void removeAllCrackers() {
+        for(Item entity : partyCrackerEntities.keySet()) {
+            entity.remove();
+        }
+        partyCrackerEntities.clear();
     }
 
     @Data
