@@ -16,6 +16,7 @@ public class ConfigurationManager {
     private static FileConfiguration configFile = BetterPartyCrackers.getPlugin().getConfig();
 
     public static void reload() {
+        BetterPartyCrackers.getPlugin().reloadConfig();
         configFile = BetterPartyCrackers.getPlugin().getConfig();
 
         for (ConfigOption option : getOptions(Config.getInst())) {

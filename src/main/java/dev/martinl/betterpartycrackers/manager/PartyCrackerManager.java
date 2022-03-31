@@ -6,6 +6,7 @@ import dev.martinl.betterpartycrackers.data.PartyCracker;
 import dev.martinl.betterpartycrackers.util.ColorUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -24,6 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PartyCrackerManager {
     private Map<String, PartyCracker> partyCrackerTypes = new HashMap<>();
     private Map<Item, CrackerItemEntityData> partyCrackerEntities = new HashMap<>();
+    @Getter
     private List<Integer> failedCrackers = new ArrayList<>();
 
     public PartyCrackerManager() {
@@ -42,6 +44,7 @@ public class PartyCrackerManager {
                     partyCrackerTypes.put(partyCracker.getId(), partyCracker);
                 } else {
                     Bukkit.getConsoleSender().sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.YELLOW + "Warning: duplicate cracker types with id " + partyCracker.getId());
+                    failedCrackers.add(i + 1);
                 }
             } catch (Exception e) {
                 failedCrackers.add(i + 1);
