@@ -9,3 +9,19 @@ website: https://bit.ly/3qMJBCo
 commands:
   bpc:
     description: 'Main command'
+permissions:
+  bettterpartycrackers.*:
+    description: 'Grants all permissions'
+    children:
+      betterpartycrackers.give: true
+      betterpartycrackers.list: true
+      betterpartycrackers.info: true
+      betterpartycrackers.reload: true
+  betterpartycrackers.give:
+    description: 'Grants permission to give Party Crackers to players'
+  betterpartycrackers.list:
+    description: 'Grants permission to list all available cracker types'
+  betterpartycrackers.info:
+    description: 'Grants permission to view information about a cracker type'
+  betterpartycrackers.reload:
+    description: 'Grants permission to reload the config'

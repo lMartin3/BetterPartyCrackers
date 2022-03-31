@@ -74,6 +74,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 targetPlayer.getInventory().addItem(chosenType.buildItem(amount));
             }
             case "reload" -> {
+                if (!sender.hasPermission(RELOAD_SUBCOMMAND_PERMISSION)) {
+                    sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + Config.getInst().getNoPermissionMessage().asFormattedString());
+                    break;
+                }
                 ConfigurationManager.reload();
                 BetterPartyCrackers.getPlugin().getCrackerManager().reloadData();
                 int loadedCrackerAmount = BetterPartyCrackers.getPlugin().getCrackerManager().getPartyCrackerTypeList().size();
@@ -87,9 +91,17 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "list" -> {
+                if (!sender.hasPermission(LIST_SUBCOMMAND_PERMISSION)) {
+                    sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + Config.getInst().getNoPermissionMessage().asFormattedString());
+                    break;
+                }
                 showCrackerList(sender);
             }
             case "info" -> {
+                if (!sender.hasPermission(INFO_SUBCOMMAND_PERMISSION)) {
+                    sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + Config.getInst().getNoPermissionMessage().asFormattedString());
+                    break;
+                }
                 if(args.length<2) {
                     sender.sendMessage(Config.getInst().getPrefix().asFormattedString() + ChatColor.RED + "Usage: /bpc info <type>");
                     break;
