@@ -4,7 +4,6 @@ import dev.martinl.betterpartycrackers.data.PartyCrackerReward;
 import dev.martinl.betterpartycrackers.data.RewardList;
 import dev.martinl.betterpartycrackers.data.SerializeEnumAsString;
 import dev.martinl.betterpartycrackers.data.SerializeEnumListAsStringList;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,9 +42,7 @@ public class SerializerUtil {
                     for(Map<?, ?> serializedReward : serializedRewards.stream().toList()) {
                         PartyCrackerReward deserializedReward = deserialize(new PartyCrackerReward(), serializedReward);
                         rewardList.add(deserializedReward);
-                        Bukkit.broadcastMessage("Serialized reward: " + serializedReward + " | Deserialized: " + deserializedReward);
                     }
-                    Bukkit.broadcastMessage("Reward list: " + rewardList);
                     field.set(obj, rewardList);
                 } else {
                     field.set(obj, valueInConfig);
