@@ -1,42 +1,53 @@
 package dev.martinl.betterpartycrackers.data;
 
+import dev.martinl.betterpartycrackers.BetterPartyCrackers;
+import dev.martinl.betterpartycrackers.util.ItemBuilder;
+import dev.martinl.betterpartycrackers.util.SerializerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartyCracker {
-    private String id;
-    private String name;
-    private Material material;
-    private List<Sound> possibleSounds;
+    public String id = "example_cracker";
+    public String name;
+    public List<String> lore;
+    @SerializeEnumAsString(enumType = Material.class)
+    public Material material;
+    public boolean shiny;
+    public double detonationSeconds;
+    @SerializeEnumListAsStringList(enumType = Sound.class)
+    public List<Sound> possibleSounds = new ArrayList<>();
 
 
-
-    public Map<String, Object> serialize() {
-        Map<String, Object> mappedValues = new LinkedHashMap<>();
-        mappedValues.put("id", id);
-        mappedValues.put("name", name);
-        mappedValues.put("material", material.toString());
-        mappedValues.put("possible_sounds", possibleSounds.stream().map(Sound::toString).toList());
-        return mappedValues;
+    public ItemStack buildItem() {
+        return buildItem(1);
     }
 
-    @SuppressWarnings("unchecked")
-    public static PartyCracker fromSerializedData(Map<?, ?> yamlMap) {
-        String name = (String) yamlMap.get("name");
-        String id = (String) yamlMap.get("id");
-        Material material = Material.valueOf((String) yamlMap.get("material"));
-        List<Sound> possibleSounds = ((List<String>) yamlMap.get("possible_sounds")).stream().map(Sound::valueOf).toList();
+    public ItemStack buildItem(int amount) {
+        ItemStack result = ItemBuilder.with(material).setNameFormatted(name).setLoreFormatted(lore).setShiny(shiny).setAmount(amount).build();
+        ItemMeta itemMeta = result.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.getPersistentDataContainer().set(BetterPartyCrackers.getPlugin().getNamespacedKey(), PersistentDataType.STRING, id);
+        result.setItemMeta(itemMeta);
+        return result;
+    }
 
-        return new PartyCracker(id, name, material, possibleSounds);
+    public Map<String, Object> serialize() {
+       return SerializerUtil.serializePartyCracker(this);
+    }
+    public static PartyCracker fromSerializedData(Map<?, ?> data) {
+        return SerializerUtil.createPartyCrackerFromSerializedData(data);
     }
 }

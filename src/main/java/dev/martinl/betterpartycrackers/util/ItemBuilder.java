@@ -21,11 +21,13 @@ public class ItemBuilder {
     ItemMeta itemMeta;
     String name = " ";
     List<String> lore = new ArrayList<>();
+    int amount = 1;
     int durability = 0;
     boolean unbreakable = false;
     int modelData = 0;
     List<Enchantment> enchantments = new ArrayList<>();
     Color color;
+    boolean shiny = false;
 
     public ItemBuilder(Material material) {
         this.material = material;
@@ -104,6 +106,16 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setLoreFormatted(List<String> lore) {
+        this.lore = lore.stream().map(line->ChatColor.translateAlternateColorCodes('&', line)).toList();
+        return this;
+    }
+
+    public ItemBuilder setAmount(int amount) {
+        this.amount = amount;
+        return this;
+    }
+
     public ItemBuilder setMeta(ItemMeta im) {
         this.itemMeta = im;
         return this;
@@ -124,8 +136,14 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setShiny(boolean shiny) {
+        this.shiny = shiny;
+        return this;
+    }
+
     public ItemStack build() {
         ItemStack result = new ItemStack(material);
+        result.setAmount(amount);
         if (this.itemMeta != null) {
             result.setItemMeta(itemMeta);
         }
@@ -141,6 +159,10 @@ public class ItemBuilder {
             if(LEATHER_ITEMS.contains(material)) {
                 LeatherArmorMeta lam = (LeatherArmorMeta) resultMeta;
                 lam.setColor(color);
+            }
+            if(shiny) {
+                resultMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                resultMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             result.setItemMeta(resultMeta);
         }
