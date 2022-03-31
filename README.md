@@ -1,5 +1,5 @@
 # Better Party Crackers
-This is a trial plugin based of [this document](https://docs.google.com/document/d/1aJMZBo-iByt0O6xmcxGsi-_NlN1uG5jYzN4zBVtU5hc/edit).
+This is a trial plugin based off [this document](https://docs.google.com/document/d/1aJMZBo-iByt0O6xmcxGsi-_NlN1uG5jYzN4zBVtU5hc/edit).
 
 ## Information
 Spigot-API version: 1.18.2<br>
@@ -27,9 +27,11 @@ Time spent: 6 hours and 30 minutes (according to WakaTime), see the observations
 
 
 ## Observations
-- Near 1.5 hours were spent in the serialization system, it was possible to shorten the development time by
+- Between 1 hours spent in the serialization system, it was possible to shorten the development time by
 using a library or manually mapping each field of the PartyCracker class. In spite of this, I opted
 for a custom serialization system, because I feel it is easier to work with and will provide
 flexibility in the future.
 - Although large commits were made in this repository, I usually perform smaller commits with less changes
 for better readability.
+- The configuration system and some utility classes were copied from other projects of mine, they have
+been adapted to fit this plugin's requirements.
