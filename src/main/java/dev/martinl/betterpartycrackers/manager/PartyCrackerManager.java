@@ -1,5 +1,6 @@
 package dev.martinl.betterpartycrackers.manager;
 
+import dev.martinl.betterpartycrackers.BetterPartyCrackers;
 import dev.martinl.betterpartycrackers.configuration.Config;
 import dev.martinl.betterpartycrackers.data.PartyCracker;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class PartyCrackerManager {
     private List<Integer> failedCrackers = new ArrayList<>();
 
     public PartyCrackerManager() {
-
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(BetterPartyCrackers.getPlugin(), this::loopItemEntities, 20, Config.getInst().getTickFrequency().asInt());
     }
 
     public void reloadData() {
@@ -34,7 +35,6 @@ public class PartyCrackerManager {
             try {
                 PartyCracker partyCracker = PartyCracker.fromSerializedData(crackerData);
                 partyCrackerTypes.put(partyCracker.getId(), partyCracker);
-                Bukkit.broadcastMessage("Sounds: " + partyCracker.getPossibleSounds());
             } catch (Exception e) {
                 failedCrackers.add(i + 1);
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Better Party Crackers - " +

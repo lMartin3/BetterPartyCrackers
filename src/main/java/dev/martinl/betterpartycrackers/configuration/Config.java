@@ -26,6 +26,8 @@ public class Config {
     @Option
     protected ConfigOption noPermissionMessage = new ConfigOption("noPermissionMessage", "&cInsufficient permissions");
     @Option
+    protected ConfigOption tickFrequency = new ConfigOption("tickFrequency", 2);
+    @Option
     protected ConfigOption crackers = new ConfigOption("crackers", Arrays.asList(examplePartyCracker.serialize()));
 
     public static Config getInst() {
